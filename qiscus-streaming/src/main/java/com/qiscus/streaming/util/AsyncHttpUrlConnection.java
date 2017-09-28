@@ -14,10 +14,11 @@ import java.util.Scanner;
 
 public class AsyncHttpUrlConnection {
     private static final int HTTP_TIMEOUT_MS = 8000;
-    private static final String HTTP_ORIGIN = "https://rtmp-api.qiscus.com";
+    private static final String HTTP_ORIGIN = "http://rtmp-api.qiscus.com";
     private final String method;
     private final String url;
     private final String message;
+    private final String api_key;
     private final AsyncHttpEvents events;
     private String contentType;
 
@@ -26,10 +27,11 @@ public class AsyncHttpUrlConnection {
         void onHttpComplete(String response);
     }
 
-    public AsyncHttpUrlConnection(String method, String url, String message, AsyncHttpEvents events) {
+    public AsyncHttpUrlConnection(String method, String url, String message, String api_key, AsyncHttpEvents events) {
         this.method = method;
-        this.url = url;
+        this.url = HTTP_ORIGIN + url;
         this.message = message;
+        this.api_key = api_key;
         this.events = events;
     }
 
@@ -59,6 +61,7 @@ public class AsyncHttpUrlConnection {
             connection.setConnectTimeout(HTTP_TIMEOUT_MS);
             connection.setReadTimeout(HTTP_TIMEOUT_MS);
             connection.addRequestProperty("origin", HTTP_ORIGIN);
+            connection.setRequestProperty("Authorization", "Token " + api_key);
             boolean doOutput = false;
 
             if (method.equals("POST")) {
