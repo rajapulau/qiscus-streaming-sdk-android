@@ -8,6 +8,7 @@ import android.util.Log;
 import com.qiscus.streaming.data.QiscusStream;
 import com.qiscus.streaming.data.QiscusStreamParameter;
 import com.qiscus.streaming.data.VideoQuality;
+import com.qiscus.streaming.ui.activity.QiscusStreamActivity;
 import com.qiscus.streaming.util.AsyncHttpUrlConnection;
 import com.qiscus.streaming.util.CreateStreamListener;
 
@@ -107,9 +108,10 @@ public class QiscusStreaming {
 
         @Override
         public QiscusStreaming start(Context context) {
-            Intent intent = new Intent(QiscusCallActivity.generateIntent(context, streamUrl, streamParameter));
+            Intent intent = new Intent(QiscusStreamActivity.generateIntent(context, streamParameter));
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(intent);
+            return this;
         }
     }
 }
