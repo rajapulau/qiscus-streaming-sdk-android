@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.view.SurfaceView;
 import android.view.View;
@@ -55,7 +56,14 @@ public class QiscusStreamActivity extends AppCompatActivity implements ConnectCh
         rtmpCamera = new RtmpCamera1(surfaceView, QiscusStreamActivity.this);
 
         parseIntentData();
-        startStream();
+
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                startStream();
+            }
+        }, 500);
     }
 
     private void parseIntentData() {
@@ -94,8 +102,13 @@ public class QiscusStreamActivity extends AppCompatActivity implements ConnectCh
 
     @Override
     public void onConnectionSuccessRtmp() {
-        stopButton.setBackgroundColor(getResources().getColor(R.color.green));
-        stopButton.setTextColor(getResources().getColor(R.color.white));
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                stopButton.setBackgroundColor(getResources().getColor(R.color.green));
+                stopButton.setTextColor(getResources().getColor(R.color.white));
+            }
+        });
     }
 
     @Override
