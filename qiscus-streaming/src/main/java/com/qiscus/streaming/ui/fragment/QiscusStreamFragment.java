@@ -6,7 +6,9 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
+import com.qiscus.streaming.R;
 import com.qiscus.streaming.data.QiscusStreamParameter;
 
 /**
@@ -18,6 +20,10 @@ public abstract class QiscusStreamFragment extends Fragment {
 
     private QiscusStreamParameter streamParameter;
     private StreamListener streamListener;
+    private boolean toggleStart;
+
+    @Nullable
+    private Button startButton;
 
     public static QiscusStreamFragment newInstance(QiscusStreamParameter parameter) {
         Bundle args = new Bundle();
@@ -49,7 +55,22 @@ public abstract class QiscusStreamFragment extends Fragment {
     }
 
     private void initView(View view) {
+        toggleStart = false;
+        startButton = (Button) view.findViewById(R.id.buttonStart);
+        startButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toggleStart = !toggleStart;
 
+                if (toggleStart) {
+                    streamListener.onStartStream();
+                    startButton.setText("Stop");
+                } else {
+                    streamListener.onStopStream();
+                    startButton.setText("Start");
+                }
+            }
+        });
     }
 
     public interface StreamListener {
@@ -59,4 +80,14 @@ public abstract class QiscusStreamFragment extends Fragment {
 
     protected abstract void onParentViewCreated(View view);
     protected abstract int getLayout();
+
+    public void showStreamingStarted() {
+        startButton.setBackgroundColor(getResources().getColor(R.color.red));
+        startButton.setTextColor(getResources().getColor(R.color.white));
+    }
+
+    public void showStreamingStopped() {
+        startButton.setBackgroundColor(getResources().getColor(R.color.white));
+        startButton.setTextColor(getResources().getColor(R.color.black));
+    }
 }
