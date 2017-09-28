@@ -13,6 +13,10 @@ public class QiscusStreamParameter implements Parcelable {
     public int videoFps = 25;
     public int videoBitrate = 350 * 1024;
 
+    public QiscusStreamParameter() {
+        //
+    }
+
     protected QiscusStreamParameter(Parcel in) {
         videoWidth = in.readInt();
         videoHeight = in.readInt();

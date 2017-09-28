@@ -14,6 +14,10 @@ public class QiscusStream implements Parcelable {
     public String playUrl;
     public String hlsUrl;
 
+    public QiscusStream() {
+        //
+    }
+
     protected QiscusStream(Parcel in) {
         streamName = in.readString();
         streamToken = in.readString();
