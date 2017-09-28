@@ -29,7 +29,7 @@ public class BasicStreamActivity extends AppCompatActivity {
                 QiscusStreaming.createStream("Stream " + (System.currentTimeMillis() / 1000L), new CreateStreamListener() {
                     @Override
                     public void onCreateStreamSuccess(QiscusStream stream) {
-                        txtRtmpUrl.setText(stream.getStreamUrl());
+                        txtRtmpUrl.setText(stream.streamUrl);
                     }
 
                     @Override
