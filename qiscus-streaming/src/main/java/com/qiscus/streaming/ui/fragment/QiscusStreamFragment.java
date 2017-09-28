@@ -82,12 +82,22 @@ public abstract class QiscusStreamFragment extends Fragment {
     protected abstract int getLayout();
 
     public void showStreamingStarted() {
-        startButton.setBackgroundColor(getResources().getColor(R.color.red));
-        startButton.setTextColor(getResources().getColor(R.color.white));
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                startButton.setBackgroundColor(getResources().getColor(R.color.red));
+                startButton.setTextColor(getResources().getColor(R.color.white));
+            }
+        });
     }
 
     public void showStreamingStopped() {
-        startButton.setBackgroundColor(getResources().getColor(R.color.white));
-        startButton.setTextColor(getResources().getColor(R.color.black));
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                startButton.setBackgroundColor(getResources().getColor(R.color.white));
+                startButton.setTextColor(getResources().getColor(R.color.black));
+            }
+        });
     }
 }

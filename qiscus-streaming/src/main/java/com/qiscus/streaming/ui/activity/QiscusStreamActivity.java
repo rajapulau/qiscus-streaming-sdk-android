@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.SurfaceView;
+import android.view.View;
+import android.widget.Toast;
 
 import com.pedro.rtplibrary.rtmp.RtmpCamera1;
 import com.qiscus.streaming.R;
@@ -72,8 +74,19 @@ public class QiscusStreamActivity extends BaseActivity implements ConnectChecker
     public void onStartStream() {
         if (rtmpCamera.prepareAudio() && rtmpCamera.prepareVideo()) {
             rtmpCamera.startStream(streamUrl);
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    surfaceView.setVisibility(View.VISIBLE);
+                }
+            });
         } else {
-            showToast("Could not start RTMP stream.");
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(QiscusStreamActivity.this, "Could not start RTMP stream.", Toast.LENGTH_SHORT).show();
+                }
+            });
         }
     }
 
@@ -81,6 +94,12 @@ public class QiscusStreamActivity extends BaseActivity implements ConnectChecker
     public void onStopStream() {
         if (rtmpCamera.isStreaming()) {
             rtmpCamera.stopStream();
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    surfaceView.setVisibility(View.INVISIBLE);
+                }
+            });
         }
     }
 
@@ -91,7 +110,12 @@ public class QiscusStreamActivity extends BaseActivity implements ConnectChecker
 
     @Override
     public void onConnectionFailedRtmp() {
-        showToast("Could not connect to RTMP endpoint. Make sure you have valid RTMP url.");
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(QiscusStreamActivity.this, "Could not connect to RTMP endpoint. Make sure you have valid RTMP url.", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override
