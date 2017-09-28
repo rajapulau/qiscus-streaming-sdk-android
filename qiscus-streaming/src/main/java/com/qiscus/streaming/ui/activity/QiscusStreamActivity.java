@@ -14,7 +14,6 @@ import android.widget.Toast;
 import com.pedro.rtplibrary.rtmp.RtmpCamera1;
 import com.qiscus.streaming.R;
 import com.qiscus.streaming.data.QiscusStreamParameter;
-import com.qiscus.streaming.ui.fragment.QiscusStreamFragment;
 
 import net.ossrs.rtmp.ConnectCheckerRtmp;
 
@@ -31,7 +30,6 @@ public class QiscusStreamActivity extends AppCompatActivity implements ConnectCh
 
     private static String streamUrl;
     private QiscusStreamParameter streamParameter;
-    private QiscusStreamFragment streamFragment;
     private RtmpCamera1 rtmpCamera;
     private SurfaceView surfaceView;
     private Button stopButton;
