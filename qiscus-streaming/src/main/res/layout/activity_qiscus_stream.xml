@@ -10,12 +10,17 @@
     <SurfaceView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="invisible"
         android:id="@+id/cameraPreview" />
 
-    <FrameLayout
-        android:id="@+id/stream_fragment_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+    <Button
+        android:text="Stop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="20dp"
+        android:background="@color/white"
+        android:textColor="@color/black"
+        android:id="@+id/buttonStop" />
 
 </RelativeLayout>

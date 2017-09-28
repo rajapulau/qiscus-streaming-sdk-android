@@ -4,8 +4,10 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.SurfaceView;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.pedro.rtplibrary.rtmp.RtmpCamera1;
@@ -15,7 +17,7 @@ import com.qiscus.streaming.ui.fragment.QiscusStreamFragment;
 
 import net.ossrs.rtmp.ConnectCheckerRtmp;
 
-public class QiscusStreamActivity extends BaseActivity implements ConnectCheckerRtmp, QiscusStreamFragment.StreamListener {
+public class QiscusStreamActivity extends AppCompatActivity implements ConnectCheckerRtmp, View.OnClickListener {
     private static final String TAG = QiscusStreamActivity.class.getSimpleName();
 
     private String[] permissions = {
@@ -31,6 +33,8 @@ public class QiscusStreamActivity extends BaseActivity implements ConnectChecker
     private QiscusStreamFragment streamFragment;
     private RtmpCamera1 rtmpCamera;
     private SurfaceView surfaceView;
+    private Button stopButton;
+    private boolean toggleStart;
 
     public static Intent generateIntent(Context context, String url, QiscusStreamParameter parameter) {
         Intent intent = new Intent(context, QiscusStreamActivity.class);
@@ -42,85 +46,69 @@ public class QiscusStreamActivity extends BaseActivity implements ConnectChecker
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_qiscus_stream);
+
+        toggleStart = true;
+        surfaceView = (SurfaceView) findViewById(R.id.cameraPreview);
+        stopButton = (Button) findViewById(R.id.buttonStop);
+        stopButton.setOnClickListener(this);
+        rtmpCamera = new RtmpCamera1(surfaceView, QiscusStreamActivity.this);
+
         parseIntentData();
-        requestPermission(permissions);
-        initView();
-        setAlwaysOn();
-        setFullscreen();
-    }
-
-    @Override
-    public int getLayout() {
-        return R.layout.activity_qiscus_stream;
-    }
-
-    @Override
-    protected void onPermissionGranted() {
-        streamFragment = QiscusStreamFragment.newInstance(streamParameter);
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.stream_fragment_container, streamFragment).commit();
+        startStream();
     }
 
     private void parseIntentData() {
         streamParameter = getIntent().getParcelableExtra("STREAM_PARAMETER");
     }
 
-    private void initView() {
-        surfaceView = (SurfaceView) findViewById(R.id.cameraPreview);
-        rtmpCamera = new RtmpCamera1(surfaceView, this);
-    }
-
-    @Override
-    public void onStartStream() {
-        if (rtmpCamera.prepareAudio() && rtmpCamera.prepareVideo()) {
-            rtmpCamera.startStream(streamUrl);
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    surfaceView.setVisibility(View.VISIBLE);
-                }
-            });
-        } else {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    Toast.makeText(QiscusStreamActivity.this, "Could not start RTMP stream.", Toast.LENGTH_SHORT).show();
-                }
-            });
+    private void startStream() {
+        if (!rtmpCamera.isStreaming()) {
+            if (rtmpCamera.prepareAudio() && rtmpCamera.prepareVideo()) {
+                rtmpCamera.startStream(streamUrl);
+                stopButton.setBackgroundColor(getResources().getColor(R.color.red));
+                stopButton.setTextColor(getResources().getColor(R.color.white));
+            } else {
+                Toast.makeText(QiscusStreamActivity.this, "Could not start RTMP stream.", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
-    @Override
-    public void onStopStream() {
+    public void stopStream() {
         if (rtmpCamera.isStreaming()) {
             rtmpCamera.stopStream();
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    surfaceView.setVisibility(View.INVISIBLE);
-                }
-            });
         }
+        toggleStart = false;
+    }
+
+    public void restartStream() {
+        if (!rtmpCamera.isStreaming()) {
+            if (rtmpCamera.prepareAudio() && rtmpCamera.prepareVideo()) {
+                rtmpCamera.startStream(streamUrl);
+            } else {
+                Toast.makeText(QiscusStreamActivity.this, "Could not start RTMP stream.", Toast.LENGTH_SHORT).show();
+            }
+        }
+        toggleStart = true;
     }
 
     @Override
     public void onConnectionSuccessRtmp() {
-        streamFragment.showStreamingStarted();
+        stopButton.setBackgroundColor(getResources().getColor(R.color.green));
+        stopButton.setTextColor(getResources().getColor(R.color.white));
     }
 
     @Override
     public void onConnectionFailedRtmp() {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Toast.makeText(QiscusStreamActivity.this, "Could not connect to RTMP endpoint. Make sure you have valid RTMP url.", Toast.LENGTH_SHORT).show();
-            }
-        });
+        Toast.makeText(QiscusStreamActivity.this, "Could not connect to RTMP endpoint. Make sure you have internet connection or valid RTMP url.", Toast.LENGTH_SHORT).show();
+        stopButton.setBackgroundColor(getResources().getColor(R.color.white));
+        stopButton.setTextColor(getResources().getColor(R.color.black));
     }
 
     @Override
     public void onDisconnectRtmp() {
-        streamFragment.showStreamingStopped();
+        stopButton.setBackgroundColor(getResources().getColor(R.color.white));
+        stopButton.setTextColor(getResources().getColor(R.color.black));
     }
 
     @Override
@@ -131,5 +119,18 @@ public class QiscusStreamActivity extends BaseActivity implements ConnectChecker
     @Override
     public void onAuthSuccessRtmp() {
         //
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (toggleStart) {
+            stopButton.setBackgroundColor(getResources().getColor(R.color.white));
+            stopButton.setTextColor(getResources().getColor(R.color.black));
+            stopStream();
+        } else {
+            stopButton.setBackgroundColor(getResources().getColor(R.color.red));
+            stopButton.setTextColor(getResources().getColor(R.color.white));
+            restartStream();
+        }
     }
 }
