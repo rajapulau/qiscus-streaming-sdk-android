@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Qiscus Streaming SDK</string>
+    <string name="loading">Loading..</string>
+    <string name="error_no_internet">No internet connection</string>
 </resources>
