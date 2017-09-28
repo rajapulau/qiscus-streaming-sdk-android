@@ -28,14 +28,24 @@ public class BasicStreamActivity extends AppCompatActivity {
             public void onClick(View v) {
                 QiscusStreaming.createStream("Stream " + (System.currentTimeMillis() / 1000L), new CreateStreamListener() {
                     @Override
-                    public void onCreateStreamSuccess(QiscusStream stream) {
-                        txtRtmpUrl.setText(stream.streamUrl);
+                    public void onCreateStreamSuccess(final QiscusStream stream) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                txtRtmpUrl.setText(stream.streamUrl);
+                            }
+                        });
                     }
 
                     @Override
-                    public void onCreateStreamError(String error) {
+                    public void onCreateStreamError(final String error) {
                         Log.e(TAG, "Create stream error: " + error);
-                        Toast.makeText(BasicStreamActivity.this, "Create stream error: " + error, Toast.LENGTH_SHORT);
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(BasicStreamActivity.this, "Create stream error: " + error, Toast.LENGTH_SHORT).show();
+                            }
+                        });
                     }
                 });
             }
