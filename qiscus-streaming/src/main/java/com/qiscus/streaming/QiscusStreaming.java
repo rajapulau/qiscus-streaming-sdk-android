@@ -108,7 +108,7 @@ public class QiscusStreaming {
 
         @Override
         public QiscusStreaming start(Context context) {
-            Intent intent = new Intent(QiscusStreamActivity.generateIntent(context, streamParameter));
+            Intent intent = new Intent(QiscusStreamActivity.generateIntent(context, streamUrl, streamParameter));
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(intent);
             return this;

@@ -24,14 +24,16 @@ public class QiscusStreamActivity extends BaseActivity implements ConnectChecker
             Manifest.permission.WRITE_EXTERNAL_STORAGE
     };
 
+    private static String streamUrl;
     private QiscusStreamParameter streamParameter;
     private QiscusStreamFragment streamFragment;
     private RtmpCamera1 rtmpCamera;
     private SurfaceView surfaceView;
 
-    public static Intent generateIntent(Context context, QiscusStreamParameter parameter) {
+    public static Intent generateIntent(Context context, String url, QiscusStreamParameter parameter) {
         Intent intent = new Intent(context, QiscusStreamActivity.class);
         intent.putExtra("STREAM_PARAMETER", parameter);
+        streamUrl = url;
         return intent;
     }
 
@@ -67,37 +69,43 @@ public class QiscusStreamActivity extends BaseActivity implements ConnectChecker
     }
 
     @Override
-    public void onConnectionSuccessRtmp() {
-
-    }
-
-    @Override
-    public void onConnectionFailedRtmp() {
-
-    }
-
-    @Override
-    public void onDisconnectRtmp() {
-
-    }
-
-    @Override
-    public void onAuthErrorRtmp() {
-
-    }
-
-    @Override
-    public void onAuthSuccessRtmp() {
-
-    }
-
-    @Override
     public void onStartStream() {
-
+        if (rtmpCamera.prepareAudio() && rtmpCamera.prepareVideo()) {
+            rtmpCamera.startStream(streamUrl);
+        } else {
+            showToast("Could not start RTMP stream.");
+        }
     }
 
     @Override
     public void onStopStream() {
+        if (rtmpCamera.isStreaming()) {
+            rtmpCamera.stopStream();
+        }
+    }
 
+    @Override
+    public void onConnectionSuccessRtmp() {
+        streamFragment.showStreamingStarted();
+    }
+
+    @Override
+    public void onConnectionFailedRtmp() {
+        showToast("Could not connect to RTMP endpoint. Make sure you have valid RTMP url.");
+    }
+
+    @Override
+    public void onDisconnectRtmp() {
+        streamFragment.showStreamingStopped();
+    }
+
+    @Override
+    public void onAuthErrorRtmp() {
+        //
+    }
+
+    @Override
+    public void onAuthSuccessRtmp() {
+        //
     }
 }
