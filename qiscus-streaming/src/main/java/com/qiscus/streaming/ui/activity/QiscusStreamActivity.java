@@ -74,8 +74,9 @@ public class QiscusStreamActivity extends AppCompatActivity implements ConnectCh
         if (!rtmpCamera.isStreaming()) {
             if (rtmpCamera.prepareAudio() && rtmpCamera.prepareVideo()) {
                 rtmpCamera.startStream(streamUrl);
-                stopButton.setBackgroundColor(getResources().getColor(R.color.red));
+                stopButton.setBackground(getResources().getDrawable(R.drawable.round_button_red));
                 stopButton.setTextColor(getResources().getColor(R.color.white));
+                stopButton.setText("Stop");
             } else {
                 Toast.makeText(QiscusStreamActivity.this, "Could not start RTMP stream.", Toast.LENGTH_SHORT).show();
             }
@@ -105,8 +106,9 @@ public class QiscusStreamActivity extends AppCompatActivity implements ConnectCh
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                stopButton.setBackgroundColor(getResources().getColor(R.color.green));
+                stopButton.setBackground(getResources().getDrawable(R.drawable.round_button_red));
                 stopButton.setTextColor(getResources().getColor(R.color.white));
+                stopButton.setText("Stop");
             }
         });
     }
@@ -114,14 +116,13 @@ public class QiscusStreamActivity extends AppCompatActivity implements ConnectCh
     @Override
     public void onConnectionFailedRtmp() {
         Toast.makeText(QiscusStreamActivity.this, "Could not connect to RTMP endpoint. Make sure you have internet connection or valid RTMP url.", Toast.LENGTH_SHORT).show();
-        stopButton.setBackgroundColor(getResources().getColor(R.color.white));
-        stopButton.setTextColor(getResources().getColor(R.color.black));
     }
 
     @Override
     public void onDisconnectRtmp() {
-        stopButton.setBackgroundColor(getResources().getColor(R.color.white));
+        stopButton.setBackground(getResources().getDrawable(R.drawable.round_button_white));
         stopButton.setTextColor(getResources().getColor(R.color.black));
+        stopButton.setText("Start");
     }
 
     @Override
@@ -137,12 +138,14 @@ public class QiscusStreamActivity extends AppCompatActivity implements ConnectCh
     @Override
     public void onClick(View v) {
         if (toggleStart) {
-            stopButton.setBackgroundColor(getResources().getColor(R.color.white));
+            stopButton.setBackground(getResources().getDrawable(R.drawable.round_button_white));
             stopButton.setTextColor(getResources().getColor(R.color.black));
+            stopButton.setText("Start");
             stopStream();
         } else {
-            stopButton.setBackgroundColor(getResources().getColor(R.color.red));
+            stopButton.setBackground(getResources().getDrawable(R.drawable.round_button_red));
             stopButton.setTextColor(getResources().getColor(R.color.white));
+            stopButton.setText("Stop");
             restartStream();
         }
     }

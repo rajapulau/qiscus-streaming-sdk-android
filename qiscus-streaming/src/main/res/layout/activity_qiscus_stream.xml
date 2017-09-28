@@ -14,13 +14,14 @@
 
     <Button
         android:text="Stop"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_margin="20dp"
-        android:background="@color/white"
+        android:background="@drawable/round_button_white"
         android:textColor="@color/black"
+        android:textStyle="bold"
         android:id="@+id/buttonStop" />
 
 </RelativeLayout>
