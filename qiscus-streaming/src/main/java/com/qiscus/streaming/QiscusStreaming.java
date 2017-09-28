@@ -3,6 +3,7 @@ package com.qiscus.streaming;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
 import android.util.Log;
 
 import com.qiscus.streaming.data.QiscusStream;
@@ -11,6 +12,9 @@ import com.qiscus.streaming.data.VideoQuality;
 import com.qiscus.streaming.ui.activity.QiscusStreamActivity;
 import com.qiscus.streaming.util.AsyncHttpUrlConnection;
 import com.qiscus.streaming.util.CreateStreamListener;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Created by fitra on 27/09/17.
@@ -21,6 +25,7 @@ public class QiscusStreaming {
 
     private static Application application;
     private static volatile Context context;
+    private static volatile Handler handler;
     private static AsyncHttpUrlConnection httpConnection;
     private static QiscusStream stream;
     private static String apiKey;
@@ -36,12 +41,13 @@ public class QiscusStreaming {
     public static void init(Application instance, String api_key) {
         application = instance;
         context = application.getApplicationContext();
+        handler = new Handler(context.getMainLooper());
         apiKey = api_key;
         stream = new QiscusStream();
     }
 
     public static void createStream(String title, final CreateStreamListener listener) {
-        httpConnection = new AsyncHttpUrlConnection("POST", "/stream/create", "{\"title\": \"" + title + "\"}", new AsyncHttpUrlConnection.AsyncHttpEvents() {
+        httpConnection = new AsyncHttpUrlConnection("POST", "/stream/create", "{\"title\": \"" + title + "\"}", apiKey, new AsyncHttpUrlConnection.AsyncHttpEvents() {
             @Override
             public void onHttpError(String errorMessage) {
                 Log.e(TAG, "API connection error: " + errorMessage);
@@ -51,9 +57,22 @@ public class QiscusStreaming {
             @Override
             public void onHttpComplete(String response) {
                 Log.d(TAG, "API connection success: " + response);
+                try {
+                    JSONObject objStream = new JSONObject(response);
+                    JSONObject data = new JSONObject(objStream.getString("data"));
+                    stream.setStreamName(data.getString("name"));
+                    stream.setStreamToken(data.getString("token"));
+                    stream.setStreamUrl(data.getString("stream_url"));
+                    stream.setPlayUrl(data.getString("play_url"));
+                    stream.setHlsUrl(data.getString("hls_url"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Log.e(TAG, e.getMessage());
+                }
                 listener.onCreateStreamSuccess(stream);
             }
         });
+        httpConnection.setContentType("application/json");
         httpConnection.send();
     }
 
