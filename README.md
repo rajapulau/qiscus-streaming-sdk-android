@@ -65,7 +65,7 @@ Above is our demo API key with limited feature. To get your API key with full fe
 
 Before user can start streaming each other, they must create link streaming
 
-QiscusStreaming.createStream(stream_title, tags, callback);
+`QiscusStreaming.createStream(stream_title, tags, callback);`
 
 Parameters:
 * stream_title: String
