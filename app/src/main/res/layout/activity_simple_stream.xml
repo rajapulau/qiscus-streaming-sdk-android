@@ -25,7 +25,7 @@
         android:id="@+id/b_start_stop" />
 
     <Button
-        android:text="Create Stream"
+        android:text="Generate Stream URL"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_above="@+id/b_start_stop"
