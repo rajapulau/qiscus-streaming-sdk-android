@@ -11,6 +11,7 @@ public class QiscusStream implements Parcelable {
     public String streamName;
     public String streamToken;
     public String streamUrl;
+    public String watchUrl;
     public String playUrl;
     public String hlsUrl;
 
@@ -22,6 +23,7 @@ public class QiscusStream implements Parcelable {
         streamName = in.readString();
         streamToken = in.readString();
         streamUrl = in.readString();
+        watchUrl = in.readString();
         playUrl = in.readString();
         hlsUrl = in.readString();
     }
@@ -36,6 +38,10 @@ public class QiscusStream implements Parcelable {
 
     public void setStreamUrl(String url) {
         streamUrl = url;
+    }
+
+    public void setWatchUrl(String url) {
+        watchUrl = url;
     }
 
     public void setPlayUrl(String url) {
@@ -56,6 +62,10 @@ public class QiscusStream implements Parcelable {
 
     public String getStreamUrl() {
         return streamUrl;
+    }
+
+    public String getWatchUrl() {
+        return watchUrl;
     }
 
     public String getPlayUrl() {
@@ -88,6 +98,7 @@ public class QiscusStream implements Parcelable {
         dest.writeString(streamName);
         dest.writeString(streamToken);
         dest.writeString(streamUrl);
+        dest.writeString(watchUrl);
         dest.writeString(playUrl);
         dest.writeString(hlsUrl);
     }

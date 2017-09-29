@@ -71,6 +71,7 @@ public class QiscusStreaming {
                     stream.setStreamName(data.getString("name"));
                     stream.setStreamToken(data.getString("token"));
                     stream.setStreamUrl(data.getString("stream_url"));
+                    stream.setWatchUrl(data.getString("watch_url"));
                     stream.setPlayUrl(data.getString("play_url"));
                     stream.setHlsUrl(data.getString("hls_url"));
                 } catch (JSONException e) {

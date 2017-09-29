@@ -67,7 +67,7 @@ public class SimpleCustomChatFragment extends QiscusChatFragment {
             @Override
             public void onCreateStreamSuccess(QiscusStream stream) {
                 String message = Qiscus.getQiscusAccount().getUsername()+" Live Streaming Now!!!";
-                String deeplinkUri = "qiscus://com.android.streamer/"+stream.getStreamName()+"?streamUrl="+stream.streamUrl;
+                String deeplinkUri = "qiscus://com.android.streamer/"+stream.getStreamName()+"?watchUrl="+stream.getWatchUrl();
                 QiscusStreaming.buildStream(stream.streamUrl)
                         .setVideoQuality(VideoQuality.QVGA)
                         .start(getContext());
@@ -89,10 +89,10 @@ public class SimpleCustomChatFragment extends QiscusChatFragment {
         JSONArray buttons = new JSONArray();
 
         try {
-            payloadButton.put("url",deeplinkUrl);
+            payloadButton.put("url", deeplinkUrl);
             buttonAction.put("label", "Watch It")
                     .put("type", "link")
-                    .put("payload",payloadButton);
+                    .put("payload", payloadButton);
 
             buttons.put(buttonAction);
 
