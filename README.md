@@ -44,17 +44,17 @@ Add to your project AndroidManifest.xml
 
 Init Qiscus at your application class with your API key
 
-#### `QiscusStreaming.init(this, <api_key>);`
+#### `QiscusStreaming.init(this, api_key);`
 
 Parameters:
-- <api_key>: String
+* api_key: String
 
 ```java
 public class SampleApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        QiscusStreaming.init(this, <api_key>);
+        QiscusStreaming.init(this, api_key);
     }
 }
 ```
@@ -65,15 +65,15 @@ Above is our demo API key with limited feature. To get your API key with full fe
 
 Before user can start streaming each other, they must create link streaming
 
-QiscusStreaming.createStream(<stream_title>, <tags>, <callback>);
+QiscusStreaming.createStream(stream_title, tags, callback);
 
 Parameters:
-- <stream_title>: String
-- <tags>: JSON object
-- <callback>: CreateStreamListener()
+* stream_title: String
+* tags: JSON object
+* callback: CreateStreamListener()
 
 ```java
-QiscusStreaming.createStream(<stream_title>, <tags>, new CreateStreamListener() {
+QiscusStreaming.createStream(stream_title, tags, new CreateStreamListener() {
     @Override
     public void onCreateStreamSuccess(final QiscusStream stream) {
         runOnUiThread(new Runnable() {
@@ -98,20 +98,20 @@ QiscusStreaming.createStream(<stream_title>, <tags>, new CreateStreamListener() 
 ```
 
 Stream object:
-- streamUrl: String
-- watchUrl: String
+* streamUrl: String
+* watchUrl: String
 
 ### Start Stream
 
 Start video streaming
 
 ```java
-QiscusStreaming.buildStream(<stream_url>)
+QiscusStreaming.buildStream(stream_url)
                         .setVideoQuality(VideoQuality.QVGA)
                         .start(getContext());
 ```
 
-You can obtain stream URL from stream object.
+You can obtain stream_url from stream object.
 
 Video quality:
 - VideoQuality.QVGA
