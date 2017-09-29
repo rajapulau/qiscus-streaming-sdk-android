@@ -74,8 +74,6 @@ QiscusStreaming.buildStream(stream.streamUrl)
 
 ### IMPLEMENTATION
 
-Start video streaming from android
-
 ```java
 QiscusStreaming.createStream("Stream " + (System.currentTimeMillis() / 1000L), new CreateStreamListener() {
     @Override
