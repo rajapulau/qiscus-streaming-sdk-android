@@ -17,7 +17,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".BasicStreamActivity"></activity>
+        <activity android:name=".BasicStreamActivity" />
+        <activity
+            android:name=".SimpleCustomChatActivity"
+            android:label="@string/title_activity_simple_custom_chat"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
