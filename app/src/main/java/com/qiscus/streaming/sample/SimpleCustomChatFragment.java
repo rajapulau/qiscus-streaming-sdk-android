@@ -55,9 +55,15 @@ public class SimpleCustomChatFragment extends QiscusChatFragment {
 
     }
 
-
     public void startStream() {
-        QiscusStreaming.createStream("Stream " + (System.currentTimeMillis() / 1000L), "{'chatUser': '" + Qiscus.getQiscusAccount().getEmail() + "'}", new CreateStreamListener() {
+        JSONObject tags = new JSONObject();
+        try {
+            tags.put("chatUser", Qiscus.getQiscusAccount().getEmail());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        QiscusStreaming.createStream("Stream " + (System.currentTimeMillis() / 1000L), tags, new CreateStreamListener() {
             @Override
             public void onCreateStreamSuccess(QiscusStream stream) {
                 String message = Qiscus.getQiscusAccount().getUsername()+" Live Streaming Now!!!";

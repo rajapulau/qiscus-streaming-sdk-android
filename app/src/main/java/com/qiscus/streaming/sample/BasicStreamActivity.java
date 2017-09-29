@@ -13,6 +13,8 @@ import com.qiscus.streaming.data.QiscusStream;
 import com.qiscus.streaming.data.VideoQuality;
 import com.qiscus.streaming.util.CreateStreamListener;
 
+import org.json.JSONObject;
+
 public class BasicStreamActivity extends AppCompatActivity {
     private static final String TAG = BasicStreamActivity.class.getSimpleName();
 
@@ -26,7 +28,8 @@ public class BasicStreamActivity extends AppCompatActivity {
         btnCreate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                QiscusStreaming.createStream("Stream " + (System.currentTimeMillis() / 1000L), "", new CreateStreamListener() {
+                JSONObject tags = new JSONObject();
+                QiscusStreaming.createStream("Stream " + (System.currentTimeMillis() / 1000L), tags, new CreateStreamListener() {
                     @Override
                     public void onCreateStreamSuccess(final QiscusStream stream) {
                         runOnUiThread(new Runnable() {
