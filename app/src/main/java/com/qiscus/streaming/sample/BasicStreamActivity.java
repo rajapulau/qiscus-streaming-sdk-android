@@ -26,7 +26,7 @@ public class BasicStreamActivity extends AppCompatActivity {
         btnCreate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                QiscusStreaming.createStream("Stream " + (System.currentTimeMillis() / 1000L), new CreateStreamListener() {
+                QiscusStreaming.createStream("Stream " + (System.currentTimeMillis() / 1000L), "", new CreateStreamListener() {
                     @Override
                     public void onCreateStreamSuccess(final QiscusStream stream) {
                         runOnUiThread(new Runnable() {

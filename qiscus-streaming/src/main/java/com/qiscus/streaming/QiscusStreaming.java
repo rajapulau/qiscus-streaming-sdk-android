@@ -46,8 +46,9 @@ public class QiscusStreaming {
         stream = new QiscusStream();
     }
 
-    public static void createStream(String title, final CreateStreamListener listener) {
-        httpConnection = new AsyncHttpUrlConnection("POST", "/stream/create", "{\"title\": \"" + title + "\"}", apiKey, new AsyncHttpUrlConnection.AsyncHttpEvents() {
+    public static void createStream(String title, String tags, final CreateStreamListener listener) {
+        Log.d("TAG", "{\"title\": \"" + title + "\", \"tags\": \"" + tags + "\"}");
+        httpConnection = new AsyncHttpUrlConnection("POST", "/stream/create", "{\"title\": \"" + title + "\", \"tags\": \"" + tags + "\"}", apiKey, new AsyncHttpUrlConnection.AsyncHttpEvents() {
             @Override
             public void onHttpError(String errorMessage) {
                 Log.e(TAG, "API connection error: " + errorMessage);
