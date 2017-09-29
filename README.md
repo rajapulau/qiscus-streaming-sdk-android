@@ -72,3 +72,33 @@ QiscusStreaming.buildStream(stream.streamUrl)
                         .start(getContext());
 ```
 
+### IMPLEMENTATION
+
+Start video streaming from android
+
+```java
+QiscusStreaming.createStream("Stream " + (System.currentTimeMillis() / 1000L), new CreateStreamListener() {
+    @Override
+    public void onCreateStreamSuccess(final QiscusStream stream) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                QiscusStreaming.buildStream(stream.streamUrl)
+                                        .setVideoQuality(VideoQuality.QVGA)
+                                        .start(getContext());
+            }
+        });
+    }
+
+    @Override
+    public void onCreateStreamError(final String error) {
+        Log.e(TAG, "Create stream error: " + error);
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(BasicStreamActivity.this, "Create stream error: " + error, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+});
+```
