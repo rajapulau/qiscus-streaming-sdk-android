@@ -76,7 +76,7 @@ public class SimpleCustomChatFragment extends QiscusChatFragment {
 
             @Override
             public void onCreateStreamError(String error) {
-                Toast.makeText(getActivity(), "Create stream error: " + error, Toast.LENGTH_SHORT).show();
+                getActivity().runOnUiThread(() -> Toast.makeText(getActivity(), "Create stream error: " + error, Toast.LENGTH_SHORT).show());
             }
         });
     }
