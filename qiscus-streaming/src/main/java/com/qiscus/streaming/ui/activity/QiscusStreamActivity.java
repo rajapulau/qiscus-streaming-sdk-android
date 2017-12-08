@@ -113,7 +113,12 @@ public class QiscusStreamActivity extends AppCompatActivity implements ConnectCh
 
     @Override
     public void onConnectionFailedRtmp() {
-        Toast.makeText(QiscusStreamActivity.this, "Could not connect to RTMP endpoint. Make sure you have internet connection or valid RTMP url.", Toast.LENGTH_SHORT).show();
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(QiscusStreamActivity.this, "Could not connect to RTMP endpoint. Make sure you have internet connection or valid RTMP url.", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override
