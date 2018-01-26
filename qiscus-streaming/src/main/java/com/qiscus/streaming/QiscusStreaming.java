@@ -107,7 +107,7 @@ public class QiscusStreaming {
 
         @Override
         public RequiredVideoQuality setVideoQuality(VideoQuality quality) {
-            streamParameter =  new QiscusStreamParameter();
+            streamParameter = new QiscusStreamParameter();
 
             if (quality == VideoQuality.QVGA) {
                 streamParameter.videoWidth = 320;

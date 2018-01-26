@@ -8,8 +8,9 @@
     tools:context="com.qiscus.streaming.ui.activity.QiscusStreamActivity">
 
     <SurfaceView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_gravity="center"
         android:id="@+id/cameraPreview" />
 
     <Button

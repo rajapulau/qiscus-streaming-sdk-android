@@ -3,9 +3,11 @@ package com.qiscus.streaming.ui.activity;
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.hardware.Camera;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.SurfaceView;
 import android.view.View;
 import android.widget.Button;
@@ -16,6 +18,9 @@ import com.qiscus.streaming.R;
 import com.qiscus.streaming.data.QiscusStreamParameter;
 
 import net.ossrs.rtmp.ConnectCheckerRtmp;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class QiscusStreamActivity extends AppCompatActivity implements ConnectCheckerRtmp, View.OnClickListener {
     private static final String TAG = QiscusStreamActivity.class.getSimpleName();
@@ -29,7 +34,7 @@ public class QiscusStreamActivity extends AppCompatActivity implements ConnectCh
     };
 
     private static String streamUrl;
-    private QiscusStreamParameter streamParameter;
+    private static QiscusStreamParameter streamParameter;
     private RtmpCamera1 rtmpCamera;
     private SurfaceView surfaceView;
     private Button stopButton;
@@ -39,6 +44,7 @@ public class QiscusStreamActivity extends AppCompatActivity implements ConnectCh
         Intent intent = new Intent(context, QiscusStreamActivity.class);
         intent.putExtra("STREAM_PARAMETER", parameter);
         streamUrl = url;
+        streamParameter = parameter;
         return intent;
     }
 
@@ -52,8 +58,6 @@ public class QiscusStreamActivity extends AppCompatActivity implements ConnectCh
         stopButton = (Button) findViewById(R.id.buttonStop);
         stopButton.setOnClickListener(this);
         rtmpCamera = new RtmpCamera1(surfaceView, QiscusStreamActivity.this);
-
-        parseIntentData();
 
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
@@ -70,13 +74,10 @@ public class QiscusStreamActivity extends AppCompatActivity implements ConnectCh
         stopStream();
     }
 
-    private void parseIntentData() {
-        streamParameter = getIntent().getParcelableExtra("STREAM_PARAMETER");
-    }
-
     private void startStream() {
+
         if (!rtmpCamera.isStreaming()) {
-            if (rtmpCamera.prepareAudio() && rtmpCamera.prepareVideo()) {
+            if (rtmpCamera.prepareAudio() && rtmpCamera.prepareVideo(streamParameter.videoWidth, streamParameter.videoHeight, streamParameter.videoFps, streamParameter.videoBitrate, false, 90)) {
                 rtmpCamera.startStream(streamUrl);
                 stopButton.setBackground(getResources().getDrawable(R.drawable.round_button_red));
                 stopButton.setTextColor(getResources().getColor(R.color.white));
@@ -98,7 +99,7 @@ public class QiscusStreamActivity extends AppCompatActivity implements ConnectCh
 
     public void restartStream() {
         if (!rtmpCamera.isStreaming()) {
-            if (rtmpCamera.prepareAudio() && rtmpCamera.prepareVideo()) {
+            if (rtmpCamera.prepareAudio() && rtmpCamera.prepareVideo(streamParameter.videoWidth, streamParameter.videoHeight, streamParameter.videoFps, streamParameter.videoBitrate, false, 90)) {
                 rtmpCamera.startStream(streamUrl);
             } else {
                 Toast.makeText(QiscusStreamActivity.this, "Could not start RTMP stream.", Toast.LENGTH_SHORT).show();
