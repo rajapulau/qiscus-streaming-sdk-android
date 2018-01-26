@@ -64,6 +64,12 @@ public class QiscusStreamActivity extends AppCompatActivity implements ConnectCh
         }, 500);
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        stopStream();
+    }
+
     private void parseIntentData() {
         streamParameter = getIntent().getParcelableExtra("STREAM_PARAMETER");
     }
@@ -84,7 +90,9 @@ public class QiscusStreamActivity extends AppCompatActivity implements ConnectCh
     public void stopStream() {
         if (rtmpCamera.isStreaming()) {
             rtmpCamera.stopStream();
+            rtmpCamera.stopPreview();
         }
+
         toggleStart = false;
     }
 
@@ -96,6 +104,7 @@ public class QiscusStreamActivity extends AppCompatActivity implements ConnectCh
                 Toast.makeText(QiscusStreamActivity.this, "Could not start RTMP stream.", Toast.LENGTH_SHORT).show();
             }
         }
+
         toggleStart = true;
     }
 
@@ -112,15 +121,27 @@ public class QiscusStreamActivity extends AppCompatActivity implements ConnectCh
     }
 
     @Override
-    public void onConnectionFailedRtmp() {
-        Toast.makeText(QiscusStreamActivity.this, "Could not connect to RTMP endpoint. Make sure you have internet connection or valid RTMP url.", Toast.LENGTH_SHORT).show();
+    public void onConnectionFailedRtmp(String s) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(QiscusStreamActivity.this, "Could not connect to RTMP endpoint. Make sure you have internet connection or valid RTMP url.", Toast.LENGTH_SHORT).show();
+                rtmpCamera.stopStream();
+                rtmpCamera.stopPreview();
+            }
+        });
     }
 
     @Override
     public void onDisconnectRtmp() {
-        stopButton.setBackground(getResources().getDrawable(R.drawable.round_button_white));
-        stopButton.setTextColor(getResources().getColor(R.color.black));
-        stopButton.setText("Start");
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                stopButton.setBackground(getResources().getDrawable(R.drawable.round_button_white));
+                stopButton.setTextColor(getResources().getColor(R.color.black));
+                stopButton.setText("Start");
+            }
+        });
     }
 
     @Override
