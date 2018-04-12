@@ -42,7 +42,10 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile project(path: ':qiscus-streaming')
     compile 'com.android.support:appcompat-v7:27.0.2'
+    compile 'com.android.support:cardview-v7:27.0.2'
+    compile 'com.android.support:support-v13:27.0.2'
     compile 'com.android.support:support-v4:27.0.2'
+    compile 'com.android.support:customtabs:27.0.2'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    compile 'com.qiscus.sdk:chat:2.21.1'
+    compile 'com.qiscus.sdk:chat:2.19.1'
 }
