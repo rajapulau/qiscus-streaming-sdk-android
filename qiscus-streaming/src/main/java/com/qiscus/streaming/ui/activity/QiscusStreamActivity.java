@@ -82,7 +82,7 @@ public class QiscusStreamActivity extends AppCompatActivity {
                 liveVideoBroadcaster.setAdaptiveStreaming(true);
             }
 
-            liveVideoBroadcaster.openCamera(Camera.CameraInfo.CAMERA_FACING_FRONT);
+            liveVideoBroadcaster.openCamera(Camera.CameraInfo.CAMERA_FACING_BACK);
         }
 
         @Override
