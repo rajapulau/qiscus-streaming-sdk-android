@@ -56,8 +56,7 @@
             android:layout_margin="8dp"
             android:background="@drawable/rounded_live"
             android:padding="5dp"
-            android:text="Offline"
-            android:visibility="gone" />
+            android:text="Offline" />
     </LinearLayout>
 
     <LinearLayout
@@ -76,6 +75,7 @@
             android:layout_gravity="center_horizontal"
             android:background="@drawable/round_button_white"
             android:textColor="@color/black"
+            android:text="Start"
             android:onClick="toggleBroadcasting"
             style="@style/Base.Widget.AppCompat.Button.Colored" />
     </LinearLayout>

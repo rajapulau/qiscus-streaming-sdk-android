@@ -24,14 +24,12 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.ContentLoadingProgressBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.qiscus.streaming.R;
 import com.qiscus.streaming.data.QiscusStreamParameter;
@@ -261,6 +259,8 @@ public class QiscusStreamActivity extends AppCompatActivity {
     public void triggerStopRecording() {
         if (isRecording) {
             broadcastControlButton.setText("Start");
+            broadcastControlButton.setBackground(getResources().getDrawable(R.drawable.round_button_white));
+            broadcastControlButton.setTextColor(getResources().getColor(R.color.black));
             streamLiveStatus.setVisibility(View.GONE);
             streamLiveStatus.setText("Offline");
             streamLiveStatus.setVisibility(View.VISIBLE);
