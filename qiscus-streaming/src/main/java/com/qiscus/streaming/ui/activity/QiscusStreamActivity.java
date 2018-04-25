@@ -4,7 +4,6 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
@@ -47,29 +46,19 @@ import io.antmedia.android.broadcaster.utils.Resolution;
 public class QiscusStreamActivity extends AppCompatActivity {
     private static final String TAG = QiscusStreamActivity.class.getSimpleName();
 
-    private static String streamUrl;
-    private static QiscusStreamParameter streamParameter;
-
-    private static ILiveVideoBroadcaster liveVideoBroadcaster;
-    private static Intent liveVideoBroadcasterServiceIntent;
-    private static CameraResolutionsFragment mCameraResolutionsDialog;
-    private static ViewGroup rootView;
-    private static GLSurfaceView glView;
-    private static Button broadcastControlButton;
-    private static ImageButton settingsButton;
-    private static TextView streamLiveStatus;
-    private static TimerHandler timerHandler;
-    private static Timer timer;
-    private static long elapsedTime;
-    private static boolean isRecording = false;
-
-    public static Intent generateIntent(Context context, String url, QiscusStreamParameter parameter) {
-        Intent intent = new Intent(context, QiscusStreamActivity.class);
-        intent.putExtra("STREAM_PARAMETER", parameter);
-        streamUrl = url;
-        streamParameter = parameter;
-        return intent;
-    }
+    private ILiveVideoBroadcaster liveVideoBroadcaster;
+    private Intent liveVideoBroadcasterServiceIntent;
+    private CameraResolutionsFragment mCameraResolutionsDialog;
+    private ViewGroup rootView;
+    private GLSurfaceView glView;
+    private Button broadcastControlButton;
+    private ImageButton settingsButton;
+    private TextView streamLiveStatus;
+    private TimerHandler timerHandler;
+    private Timer timer;
+    private String streamUrl;
+    private long elapsedTime;
+    private boolean isRecording = false;
 
     private ServiceConnection mConnection = new ServiceConnection() {
         @Override
@@ -94,6 +83,10 @@ public class QiscusStreamActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Bundle extras = getIntent().getExtras();
+        streamUrl = extras.getString("STREAM_URL");
+
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
@@ -312,10 +305,16 @@ public class QiscusStreamActivity extends AppCompatActivity {
                     break;
                 case CONNECTION_LOST:
                     triggerStopRecording();
-                    new AlertDialog.Builder(QiscusStreamActivity.this)
-                            .setMessage("Connection to RTMP server is lost.")
-                            .setPositiveButton(android.R.string.yes, null)
-                            .show();
+
+                    try {
+                        new AlertDialog.Builder(QiscusStreamActivity.this)
+                                .setMessage("Connection to RTMP server is lost.")
+                                .setPositiveButton(android.R.string.yes, null)
+                                .show();
+                    } catch (Exception e) {
+                        //
+                    }
+
                     break;
             }
         }
