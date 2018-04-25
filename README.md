@@ -22,7 +22,7 @@ allprojects {
 
 ```groovy
 dependencies {
-  compile 'com.github.qiscus:qiscus-streaming-sdk-android:1.0.0'
+  compile 'com.github.qiscus:qiscus-streaming-sdk-android:1.0.1'
 }
 ```
 
