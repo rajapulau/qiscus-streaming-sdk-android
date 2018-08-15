@@ -13,28 +13,10 @@
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            <intent-filter android:label="Open Stream">
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="qiscus" android:host="com.android.streamer" />
-            </intent-filter>
-            <intent-filter android:label="Stream">
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="qiscus"
-                    android:host="com.android.streamer"
-                    android:pathPattern="/..*" />
-            </intent-filter>
         </activity>
-        <activity android:name=".BasicStreamActivity" />
-        <activity
-            android:name=".SimpleCustomChatActivity"
-            android:label="@string/title_activity_simple_custom_chat"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
